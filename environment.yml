@@ -5,6 +5,8 @@ channels:
 dependencies:
   - python==3.10
   - pandas
+  - psycopg2
+  - sqlalchemy
   #- pip
     #- pip:
     #  - uetl==0.0.8

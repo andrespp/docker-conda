@@ -1,20 +1,68 @@
 #!/usr/bin/env python3
-# -*- encoding: utf-8 -*-
+import traceback
+import os.path
+import configparser
+from HubspotObjects import SQLAlchemy
+from HubspotObjects.contacts import Contacts
+from HubspotObjects.deals import Deals
 
-import pandas as pd
-import numpy as np
+# Default settings
+CONFIG_FILE = 'config.ini'
 
-FNAME='data/foo.csv'
+if __name__ == '__main__':
 
-if __name__ == "__main__":
+    # Read configuration File
+    if not os.path.isfile(CONFIG_FILE):
+        print('ERROR: file "{}" does not exist'.format(CONFIG_FILE))
+        exit(-1)
+    try:
+        config = configparser.ConfigParser()
+        config.read(CONFIG_FILE)
 
-    from numpy.random import randn
-    np.random.seed(101)
+    except:
+        print('ERROR: Unable to read config file ("{}")'.format(CONFIG_FILE))
+        exit(-1)
 
-    df = pd.DataFrame(
-        randn(5,4),index='A B C D E'.split(),columns='W X Y Z'.split()
-    )
+    # DB Connection
+    user = config['DB']['USER']
+    pswd = config['DB']['PASS']
+    host = config['DB']['HOST']
+    port = config['DB']['PORT']
+    base = config['DB']['BASE']
+    url = f"postgresql://{user}:{pswd}@{host}:{port}/{base}"
+    db = SQLAlchemy.Database(connection_string=url, echo=True)
 
-    df.to_csv(FNAME, index=False)
+    #### App itself
 
-    print(f'{FNAME} written!')
+    # Sample data
+    contacts = [
+        Contacts(username='John'),
+        Contacts(username='Jack'),
+        Contacts(username='James'),
+    ]
+    deals = [
+        Deals(dealname='Deal #1'),
+        Deals(dealname='Deal #2'),
+        Deals(dealname='Deal #3'),
+        Deals(dealname='Deal #4'),
+    ]
+
+    # Write contacts to db
+    for contact in contacts:
+        session = db.session()
+        try:
+            session.add(contact)
+            session.commit()
+        except Exception as e:
+            print(f'err: {e}')
+
+    # Write deals to db
+    for deal in deals:
+        session = db.session()
+        try:
+            session.add(deal)
+            session.commit()
+        except Exception as e:
+            print(f'err: {e}')
+
+

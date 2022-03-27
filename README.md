@@ -3,14 +3,14 @@ Docker Conda
 
 ## Introduction
 
-Base image for python projects using [conda](https://anaconda.org/)
+Base image for python projects using [conda](https://anaconda.org/) with [PostgreSQL](https://www.postgresql.org/) backend.
 
 ## Deploy and Usage
 
 ### Clone Repository
 
 ```bash
-$ git clone git@github.com:andrespp/docker-conda.git
+$ git clone -b postgres git@github.com:andrespp/docker-conda.git
 ```
 
 ### Build and test docker image
@@ -26,9 +26,10 @@ $ make run-test
 $ make runi
 ```
 
-### Run Job
+### Run App
 
 ```bash
+$ docker-compose up -d # db backend
 $ make run
 ```
 
@@ -43,6 +44,10 @@ $ make
 ### Set image name
 
 Edit `IMAGE_NAME` variable on `Makefile`
+
+### Set docker container name
+
+Edit `service` and `container_name` parameters on `docker-compose.yml`
 
 ### Set job commands
 

@@ -10,12 +10,9 @@ RUN apt-get update && apt-get install -y vim && cd ~/ && \
 
 # Locale
 RUN apt-get install -y locales && locale-gen pt_BR.UTF-8
-#RUN sed -i -e 's/# pt_BR.UTF-8 UTF-8/pt_BR.UTF-8 UTF-8/' /etc/locale.gen && \
-#   locale-gen
 
-## Python and pyscopg
-#RUN apt-get -y install build-essential unixodbc-dev python3-psycopg2 \
-#                        libpq-dev locales
+# Pyscopg
+RUN apt-get -y install build-essential unixodbc-dev python3-psycopg2 libpq-dev
 
 # Setup Conda Environment
 ARG CONDA_ENV_NAME=condaenv
