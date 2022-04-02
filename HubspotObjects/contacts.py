@@ -8,7 +8,6 @@ class Contacts(Base):
     __tablename__ = 'contacts'
 
     # Table columns
-    __tablename__ = 'contacts'
     id = Column(Integer(), primary_key=True)
     username = Column(String(25), unique=True, nullable=False)
 
