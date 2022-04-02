@@ -48,21 +48,23 @@ if __name__ == '__main__':
     ]
 
     # Write contacts to db
+    session = db.session()
     for contact in contacts:
-        session = db.session()
         try:
             session.add(contact)
-            session.commit()
         except Exception as e:
             print(f'err: {e}')
+            session.rollback()
+        else:
+            session.commit()
 
     # Write deals to db
     for deal in deals:
-        session = db.session()
         try:
             session.add(deal)
-            session.commit()
         except Exception as e:
             print(f'err: {e}')
-
+            session.rollback()
+        else:
+            session.commit()
 
